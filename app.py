@@ -25,18 +25,18 @@ def textToStory(text):
     return response.text
 
 ##story to speech
-def storyToSpeech():
+def storyToSpeech(story):
     API_TOKEN = os.getenv("API_Token")
     API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
     payload = {
-        "inputs" : "hello there"
+        "inputs" : story
     }
     response = requests.post(API_URL, headers=headers, json=payload)
     with open('audio.flac','wb') as file:
         file.write(response.content)
 
 
-#topic = imgtotext("boys.jpg")
-#story = textToStory(topic)
-storyToSpeech()
+# topic = imgtotext("boys.jpg")
+# story = textToStory(topic)
+# storyToSpeech(story)
