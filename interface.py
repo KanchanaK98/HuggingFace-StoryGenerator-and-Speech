@@ -6,14 +6,14 @@ def main():
     uploaded_file = st.file_uploader("Choose an Image",type="jpg")
 
     if uploaded_file is not None:
-        print(uploaded_file)
         bytes_data = uploaded_file.getvalue()
         with open(uploaded_file.name,"wb") as file:
             file.write(bytes_data)
         st.image(uploaded_file,caption="Uploaded Image",use_column_width=True)
-        makeText = imgtotext(uploaded_file.name)
-        story = textToStory(makeText)
-        storyToSpeech(story)
+        with st.spinner('Processing...'):
+            makeText = imgtotext(uploaded_file.name)
+            story = textToStory(makeText)
+            storyToSpeech(story)
 
         with st.expander("Text"):
             st.write(makeText)
