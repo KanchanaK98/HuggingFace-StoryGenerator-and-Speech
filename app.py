@@ -1,6 +1,10 @@
 from dotenv import find_dotenv, load_dotenv
 from transformers import pipeline
 
+import google.generativeai as genai
+import os
+
+
 load_dotenv(find_dotenv())
 
 ## image to text model
@@ -11,5 +15,14 @@ def imgtotext(url):
     print(response_text)
     return response_text
 
+##text to story
+def textToSpeech(text):
+    genai.configure(api_key=os.environ["API_KEY"])
+    model = genai.GenerativeModel('gemini-pro')
+    response = model.generate_content(text)
+    print(response.text)
+    return response.text
 
-imgtotext("boys.jpg")
+
+##imgtotext("boys.jpg")
+textToSpeech("Hi there?")
