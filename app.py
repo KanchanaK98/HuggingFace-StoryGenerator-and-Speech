@@ -4,6 +4,7 @@ from transformers import pipeline
 import google.generativeai as genai
 import os
 
+import requests
 
 load_dotenv(find_dotenv())
 
@@ -16,13 +17,26 @@ def imgtotext(url):
     return response_text
 
 ##text to story
-def textToSpeech(text):
+def textToStory(text):
     genai.configure(api_key=os.environ["API_KEY"])
     model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(text)
+    response = model.generate_content("You are a story teller. You can generate a short story based on a simple narrative, the story should not be more than 50 words, minimum 30 words and use simple english. The topic is {text}")
     print(response.text)
     return response.text
 
+##story to speech
+def storyToSpeech():
+    API_TOKEN = os.getenv("API_Token")
+    API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
+    headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    payload = {
+        "inputs" : "hello there"
+    }
+    response = requests.post(API_URL, headers=headers, json=payload)
+    with open('audio.flac','wb') as file:
+        file.write(response.content)
 
-##imgtotext("boys.jpg")
-textToSpeech("Hi there?")
+
+#topic = imgtotext("boys.jpg")
+#story = textToStory(topic)
+storyToSpeech()
